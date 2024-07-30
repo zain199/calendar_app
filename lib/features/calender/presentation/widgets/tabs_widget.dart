@@ -1,9 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/util/style/colors.dart';
+import '../bloc/calendar_bloc.dart';
 
 class TabsWidget extends StatefulWidget {
   const TabsWidget({super.key});
@@ -15,7 +17,6 @@ class TabsWidget extends StatefulWidget {
 class _TabsWidgetState extends State<TabsWidget> with SingleTickerProviderStateMixin{
 
   TabController? tabController;
-  int index = 0;
 
   @override
   void initState() {
@@ -25,6 +26,7 @@ class _TabsWidgetState extends State<TabsWidget> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    CalendarBloc bloc = BlocProvider.of<CalendarBloc>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
       child: TabBar(
@@ -36,7 +38,7 @@ class _TabsWidgetState extends State<TabsWidget> with SingleTickerProviderStateM
         indicatorSize: TabBarIndicatorSize.tab,
         controller: tabController,
         onTap: (value) => setState(() {
-          index = value;
+          bloc.add(UpdateCurrentTabEvent(value));
           log(value.toString());
         }),
         tabs: [
@@ -44,13 +46,13 @@ class _TabsWidgetState extends State<TabsWidget> with SingleTickerProviderStateM
             "Schedule",
             style: Get.theme.textTheme.bodyLarge!.copyWith(
                 fontWeight: FontWeight.w700,
-                color: index == 0 ? null : AppColors.grey500Color),
+                color: bloc.tabIndex == 0 ? null : AppColors.grey500Color),
           ),
           Text(
             "Task",
             style: Get.theme.textTheme.bodyLarge!.copyWith(
                 fontWeight: FontWeight.w700,
-                color: index == 1 ? null : AppColors.grey500Color),
+                color: bloc.tabIndex == 1 ? null : AppColors.grey500Color),
           ),
         ],
       ),

@@ -13,7 +13,7 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        GeneralButton(text: "Login", onPressed: () => Get.offAll(const MainLayoutScreen())),
+        GeneralButton(text: "Login", onPressed: () => Get.offAll(MainLayoutScreen())),
         const SizedBox(height: 24),
         Align(
           alignment: Alignment.center,
